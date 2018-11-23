@@ -1,0 +1,89 @@
+
+```python
+# %%
+import chartify
+import pandas as pd
+# %%
+```
+
+
+```python
+# %%
+ch = chartify.Chart()
+(ch.set_title("Titanic").
+  set_subtitle("Life and destiny").
+  axes.set_xaxis_label("Status").
+  axes.set_yaxis_label("Survived").
+  axes.set_xaxis_range(1,5).
+  callout.text('A tragic destiny', x=4, y=240).
+  show())
+# %%
+```
+
+
+```python
+# %%
+data = chartify.examples.example_data()
+data.head()
+# %%
+```
+
+
+```python
+# %%
+pivoted_data = pd.pivot_table(data, columns='country', values='quantity', index='fruit', aggfunc='sum')
+value_columns = pivoted_data.columns
+pd.melt(pivoted_data.reset_index(), # Need to reset the index to put "fruit" into a column.
+  id_vars='fruit',
+  value_vars=value_columns)
+# %%
+```
+
+
+```python
+# %%
+chart_data = (data.
+  groupby(['country'])['quantity'].
+  sum().
+  reset_index())
+chart_data
+# %%
+```
+
+
+```python
+# %%
+bar_data = (data
+  .groupby('country')[['quantity']]
+  .sum()
+  .reset_index()
+)
+bar_data
+# %%
+```
+
+```python
+# %%
+chartify.examples.plot_bar()
+# %%
+```
+
+```python
+# %%
+grouped_bar_data = (data.
+  groupby(['country', 'fruit'])[['quantity']].
+  sum().
+  reset_index()
+          )
+grouped_bar_data
+
+
+# %%
+```
+
+
+```python
+# %%
+
+# %%
+```
