@@ -96,3 +96,82 @@ p.ygrid.band_fill_alpha = 0.1
 # show the results
 show(p)
 # %%
+
+
+```python
+# %%
+from scipy.stats import norm
+import numpy as np
+sam = sorted(norm.rvs(size=100))
+p = figure(plot_width=600, plot_height=400,
+    tools="pan,box_zoom,reset,save",
+    y_range=[0., 1.1], title="Fonction de répartition, échantillon gaussien de taille 100",
+    x_axis_label='x', y_axis_label='y')
+# add a steps renderer
+p.step(sam, np.linspace(1.0, len(sam), len(sam))/float(len(sam)),
+    line_width=2, mode="after",
+    legend="Fonction de répartition empirique")
+p.line(sam, norm.cdf(sam), color='red', line_width=1,
+    legend="Fonction de répartition gaussienne standard")
+show(p)
+# %%
+```
+
+
+
+# %%
+from scipy.stats import norm
+import numpy as np
+sam = sorted(norm.rvs(size=1000))
+p = figure(plot_width=600, plot_height=400,
+    tools="pan,box_zoom,reset,save",
+    y_range=[0.,1.1], title="Pont empirique, échantillon gaussien de taille 100",
+    x_axis_label='x', y_axis_label='y')
+# add a steps renderer
+p.line(sam, np.sqrt(len(sam))*np.abs(np.linspace(1.0, len(sam), len(sam))/float(len(sam)) - norm.cdf(sam)), color='red', line_width=1)
+show(p)
+# %%
+
+
+# %%
+from scipy.stats import norm
+import numpy as np
+sam = sorted(norm.rvs(size=1000))
+p = figure(plot_width=600, plot_height=400,
+    tools="pan,box_zoom,reset,save",
+    title="Pont empirique standardisé, échantillon gaussien de taille 100",
+    x_axis_label='x', y_axis_label='y')
+for col in ['blue', 'red', 'green', 'black', 'olive']:
+    p.line(norm.cdf(sam),
+        np.sqrt(len(sam))*np.abs(np.linspace(1.0/len(sam), 1.0, len(sam), endpoint=True) - norm.cdf(sam)),
+        color=col,
+        line_width=1)
+
+show(p)
+# %%
+
+
+# %%
+# from bokeh.plotting import figure
+from pweave.bokeh import output_pweave, show
+
+output_pweave()
+
+from scipy.stats import norm
+import numpy as np
+n = 1000
+p = figure(plot_width=600, plot_height=400,
+    tools="pan,box_zoom,reset,save",
+    title="Pont empirique standardisé, échantillon gaussien de taille {0:4d}".format(n),
+    x_axis_label='x', y_axis_label='y')
+for col in ['blue', 'red', 'green', 'black', 'olive']:
+    sam = sorted(norm.rvs(size=n))
+    p.line(norm.cdf(sam),
+        np.sqrt(len(sam))*np.abs(np.linspace(1.0/len(sam), 1.0, len(sam), endpoint=True) - norm.cdf(sam)),
+        color=col,
+        line_width=1,
+        alpha=.5)
+x = np.linspace(1.0/n, 1.0, n, endpoint=True)
+p.line(x, 2*np.sqrt(x * (1-x)), color='black', line_dash="4 4", legend='$2\sqrt{x(1-x)}$')
+show(p)
+# %%
